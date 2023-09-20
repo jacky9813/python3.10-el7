@@ -9,7 +9,22 @@ Note: The RPM spec is still in development.
 * `_ssl` requires `openssl11-libs` from epel repo, I'm not sure whether to put
   `epel-release` as one of the requirement packages or not.
 
-## Build
+## Build (With Docker, Recommended)
+
+```bash
+#!/bin/bash
+mkdir -p build
+docker build -t python-rpm:3.10.13-1.el7.jackychen.$(uname -m) .
+docker save python-rpm:3.10.13-1.el7.jackychen.$(uname -m) -o build/3.10.13-1.el7.jackychen.$(uname -m).tar
+tar xvf build/3.10.13-1.el7.jackychen.$(uname -m).tar -C build
+pushd $(find build/* -type d)
+tar xvf layer.tar -C ../
+popd
+find build/* -type f -not -name '*.rpm' -exec rm {} \;
+find build/* -type d | xargs -n 1 rm -r
+```
+
+## Build (On local machine)
 
 Caution: This process will temporary replace `/usr/lib64/pkgconfig/openssl.pc` with
 `/usr/lib64/pkgconfig/openssl11.pc`.
