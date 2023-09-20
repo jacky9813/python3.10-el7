@@ -46,10 +46,6 @@ BuildRequires:  tzdata
 BuildRequires:  xz-devel
 BuildRequires:  zlib-devel
 
-Provides:       python%{pybasever} = %{version}-%{release}
-Provides:       python%{pybasever}
-Provides:       python%{pyshortver} = %{version}-%{release}
-Obsoletes:      python%{pyshortver} < %{version}-%{release}
 
 %global pylibdir %{_libdir}/python%{pybasever}
 %global dynload_dir %{pylibdir}/lib-dynload
@@ -70,6 +66,76 @@ Obsoletes:      python%{pyshortver} < %{version}-%{release}
 
 %global py_SOVERSION 1.0
 %global py_INSTSONAME libpython%{LDVERSION}.so.%{py_SOVERSION}
+
+
+AutoReqProv:    no
+
+Provides:       python%{pybasever} = %{version}-%{release}
+Provides:       python%{pybasever}
+Provides:       python%{pyshortver} = %{version}-%{release}
+Provides:       %{py_INSTSONAME} = %{version}-%{release}
+Provides:       bundled(python%{pybasever}dist(pip)) = %{pip_version}
+Provides:       bundled(python%{pybasever}dist(setuptools)) = %{setuptools_version}
+Provides:       %{name}-2to3 = %{version}-%{release}
+Provides:       %{name}-pip = %{version}-%{release}
+Provides:       %{name}-setuptools = %{version}-%{release}
+Obsoletes:      python%{pyshortver} < %{version}-%{release}
+
+	
+%if "%{_lib}" == "lib64"
+Provides:       %{py_INSTSONAME}()(64bit) = %{version}-%{release}
+Requires:       ld-linux-x86-64.so.2()(64bit)
+Requires:       libbz2.so.1()(64bit)
+Requires:       libc.so.6()(64bit)
+Requires:       libcrypt.so.1()(64bit)
+Requires:       libcrypto.so.1.1()(64bit)
+Requires:       libdl.so.2()(64bit)
+Requires:       libexpat.so.1()(64bit)
+Requires:       libffi.so.6()(64bit)
+Requires:       libfreebl3.so()(64bit)
+Requires:       libgdbm.so.4()(64bit)
+Requires:       libgdbm_compat.so.4()(64bit)
+Requires:       liblzma.so.5()(64bit)
+Requires:       libm.so.6()(64bit)
+Requires:       libncursesw.so.5()(64bit)
+Requires:       libnsl.so.1()(64bit)
+Requires:       libpanelw.so.5()(64bit)
+Requires:       libpthread.so.0()(64bit)
+Requires:       libreadline.so.6()(64bit)
+Requires:       librt.so.1()(64bit)
+Requires:       libsqlite3.so.0()(64bit)
+Requires:       libssl.so.1.1()(64bit)
+Requires:       libtinfo.so.5()(64bit)
+Requires:       libutil.so.1()(64bit)
+Requires:       libuuid.so.1()(64bit)
+Requires:       libz.so.1()(64bit)
+%else
+Requires:       ld-linux-x86-64.so.2
+Requires:       libbz2.so.1
+Requires:       libc.so.6
+Requires:       libcrypt.so.1
+Requires:       libcrypto.so.1.1
+Requires:       libdl.so.2
+Requires:       libexpat.so.1
+Requires:       libffi.so.6
+Requires:       libfreebl3.so
+Requires:       libgdbm.so.4
+Requires:       libgdbm_compat.so.4
+Requires:       liblzma.so.5
+Requires:       libm.so.6
+Requires:       libncursesw.so.5
+Requires:       libnsl.so.1
+Requires:       libpanelw.so.5
+Requires:       libpthread.so.0
+Requires:       libreadline.so.6
+Requires:       librt.so.1
+Requires:       libsqlite3.so.0
+Requires:       libssl.so.1.1
+Requires:       libtinfo.so.5
+Requires:       libutil.so.1
+Requires:       libuuid.so.1
+Requires:       libz.so.1
+%endif
 
 %description
 Python %{pybasever} is an accessible, high-level, dynamically typed, interpreted
