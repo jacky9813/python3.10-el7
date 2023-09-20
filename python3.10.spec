@@ -32,7 +32,6 @@ BuildRequires:  gnupg
 BuildRequires:  libffi-devel
 BuildRequires:  libuuid-devel
 BuildRequires:  make
-BuildRequires:  mpdecimal-devel
 BuildRequires:  ncurses-devel
 BuildRequires:  openssl11-devel
 BuildRequires:  perl-core
@@ -42,6 +41,7 @@ BuildRequires:  sqlite-devel
 BuildRequires:  tar
 BuildRequires:  tcl-devel
 BuildRequires:  tix-devel
+BuildRequires:  tk-devel
 BuildRequires:  tzdata
 BuildRequires:  xz-devel
 BuildRequires:  zlib-devel
@@ -109,6 +109,16 @@ Requires:       libtinfo.so.5()(64bit)
 Requires:       libutil.so.1()(64bit)
 Requires:       libuuid.so.1()(64bit)
 Requires:       libz.so.1()(64bit)
+Requires:       libtk8.5.so()(64bit)
+Requires:       libtcl8.5.so()(64bit)
+Requires:       libX11.so.6()(64bit)
+Requires:       libXft.so.2()(64bit)
+Requires:       libfreetype.so.6()(64bit)
+Requires:       libxcb.so.1()(64bit)
+Requires:       libfontconfig.so.1()(64bit)
+Requires:       libXrender.so.1()(64bit)
+Requires:       libpng15.so.15()(64bit)
+Requires:       libXau.so.6()(64bit)
 %else
 Requires:       ld-linux-x86-64.so.2
 Requires:       libbz2.so.1
@@ -135,6 +145,16 @@ Requires:       libtinfo.so.5
 Requires:       libutil.so.1
 Requires:       libuuid.so.1
 Requires:       libz.so.1
+Requires:       libtk8.5.so
+Requires:       libtcl8.5.so
+Requires:       libX11.so.6
+Requires:       libXft.so.2
+Requires:       libfreetype.so.6
+Requires:       libxcb.so.1
+Requires:       libfontconfig.so.1
+Requires:       libXrender.so.1
+Requires:       libpng15.so.15
+Requires:       libXau.so.6
 %endif
 
 %description
@@ -320,6 +340,7 @@ rm %{buildroot}%{_libdir}/pkgconfig/python3-embed.pc
 %{dynload_dir}/_xxsubinterpreters.%{SOABI}.so
 %{dynload_dir}/zlib.%{SOABI}.so
 %{dynload_dir}/_zoneinfo.%{SOABI}.so
+%{dynload_dir}/_tkinter.%{SOABI}.so
 
 %dir %{pylibdir}/site-packages/
 %{pylibdir}/site-packages/README.txt

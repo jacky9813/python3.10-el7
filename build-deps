@@ -16,7 +16,6 @@ gnupg
 libffi-devel
 libuuid-devel
 make
-mpdecimal-devel
 ncurses-devel
 openssl11-devel
 perl-core
@@ -25,6 +24,7 @@ readline-devel
 sqlite-devel
 tar
 tcl-devel
+tk-devel
 tix-devel
 tzdata
 xz-devel
