@@ -19,11 +19,12 @@ cannot support.
   2.4.2 in EPEL repo.
 * I'm not planned to unbundle things like python3.10-pip and python3.10-setuptools into
   separated packages. It'll create too much hassle for me when all I want is to get 
-  Python working only. (Contribution are welcomed.)
+  Python working only. (Maybe I'll try it when I'm free? Contribution are welcomed as
+  well.)
 * The built RPM package will not create links for Idle in desktop.
   * I mean c'mon, you should have something like VSCode or PyCharm already, right?
 
-## Build (With Docker, Recommended)
+## Build (With Docker, Recommended, Distro independent)
 
 ```bash
 #!/bin/bash
@@ -39,7 +40,7 @@ find build/* -type f -not -name '*.rpm' -exec rm {} \;
 find build/* -type d | xargs -n 1 rm -r
 ```
 
-## Build (On local machine)
+## Build (On local machine, requires EL7-based OS)
 
 ```bash
 #!/bin/bash
