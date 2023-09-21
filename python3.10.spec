@@ -99,7 +99,7 @@ Obsoletes:      %{name}-tools < %{version}-%{release}
 Provides:       %{name}-tkinter = %{version}-%{release}
 Provides:       %{name}-turtle = %{version}-%{release}
 
-%global __requires_exclude ^/usr/local/bin/python|/usr/bin/python3.10|libpython3.10.*$
+%global __requires_exclude ^/usr/bin/python3.10|libpython3.10.*$
 
 %description
 Python %{pybasever} is an accessible, high-level, dynamically typed, interpreted
@@ -159,6 +159,10 @@ topdir=$(pwd)
 [ -f %{buildroot}%{_libdir}/pkgconfig/python3.pc ] && rm %{buildroot}%{_libdir}/pkgconfig/python3.pc
 [ -f %{buildroot}%{_libdir}/pkgconfig/python3-embed.pc ] && rm %{buildroot}%{_libdir}/pkgconfig/python3-embed.pc
 ls %{buildroot}%{_bindir}/python3-* > /dev/null && rm %{buildroot}%{_bindir}/python3-* || true
+
+
+# As the file said, vendor may patch the shebang in cgi.py.
+sed -i "s|#! */usr/local/bin/python|#! %{_bindir}/python%{pybasever}|" %{buildroot}%{_libdir}/python%{pybasever}/cgi.py
 
 # For some reason, the shebang of installed pip points to /usr/bin/python instead
 # of /usr/bin/python3.10. The script below is to change that.
