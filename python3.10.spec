@@ -67,20 +67,37 @@ BuildRequires:  zlib-devel
 %global py_SOVERSION 1.0
 %global py_INSTSONAME libpython%{LDVERSION}.so.%{py_SOVERSION}
 
-
-# AutoReqProv:    no
-AutoProv:       no
-
-Provides:       python%{pybasever} = %{version}-%{release}
-Provides:       python%{pybasever}
+###################################
+# Provides section
+###################################
+# Base Python
+Provides:       %{name}%{?_isa} = %{version}-%{release}
+Provides:       %{name}-libs%{?_isa} = %{version}-%{release}
+Provides:       %{name}-devel = %{version}-%{release}
 Provides:       python%{pyshortver} = %{version}-%{release}
-Provides:       %{py_INSTSONAME} = %{version}-%{release}
-Provides:       bundled(python%{pybasever}dist(pip)) = %{pip_version}
-Provides:       bundled(python%{pybasever}dist(setuptools)) = %{setuptools_version}
-Provides:       %{name}-2to3 = %{version}-%{release}
-Provides:       %{name}-pip = %{version}-%{release}
-Provides:       %{name}-setuptools = %{version}-%{release}
 Obsoletes:      python%{pyshortver} < %{version}-%{release}
+
+# Pip
+Provides:       bundled(python%{pybasever}dist(pip)) = %{pip_version}
+Provides:       %{name}-pip = %{pip_version}
+Conflicts:      %{name}-pip < %{pip_version}
+
+# Setuptools
+Provides:       bundled(python%{pybasever}dist(setuptools)) = %{setuptools_version}
+Provides:       %{name}-setuptools = %{setuptools_version}
+
+# 2to3
+Provides:       %{name}-2to3 = %{version}-%{release}
+
+# Idle
+Provides:       %{name}-idle = %{version}-%{release}
+Provides:       %{name}-tools = %{version}-%{release}
+Provides:       %{name}-tools%{?_isa} = %{version}-%{release}
+Obsoletes:      %{name}-tools < %{version}-%{release}
+
+# module tkinter
+Provides:       %{name}-tkinter = %{version}-%{release}
+Provides:       %{name}-turtle = %{version}-%{release}
 
 %global __requires_exclude ^/usr/local/bin/python|/usr/bin/python3.10|libpython3.10.*$
 
