@@ -57,3 +57,11 @@ rpmbuild -bb python3.10.spec
 # The built RPM packages will exist in ~/rpmbuild/RPMS for binary RPMs and
 # ~/rpmbuild/SRPMS for source RPM.
 ```
+
+## Install RPM
+
+```bash
+#!/bin/bash
+yum install -y epel-release
+yum install -y ./python3.10-3.10.13-1.el7.jackychen.x86_64.rpm
+```
