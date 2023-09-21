@@ -29,8 +29,9 @@ cannot support.
 
 ```bash
 #!/bin/bash
-mkdir -p build
 docker build -t python-rpm:3.10.13-1.el7.jackychen.$(uname -m) .
+[ -d build ] && rm -r build
+mkdir -p build
 docker save python-rpm:3.10.13-1.el7.jackychen.$(uname -m) -o build/3.10.13-1.el7.jackychen.$(uname -m).tar
 tar xvf build/3.10.13-1.el7.jackychen.$(uname -m).tar -C build
 pushd $(find build/* -type d)
