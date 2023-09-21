@@ -16,6 +16,9 @@ cannot support.
       being used by any Python script. User may have very degraded experience.
 * `_ssl` requires `openssl11-libs` from epel repo, I'm not sure whether to put
   `epel-release` as one of the requirement packages or not.
+* Unlike official Python build, this package uses builtin `libmpdec` instead of official
+  EL7 one, as `libmpdec` Python 3.10 requires 2.5.0 or later while EL7 provides only
+  2.4.2 in EPEL repo.
 * I'm not planned to unbundle things like python3.10-pip and python3.10-setuptools into
   separated packages. It'll create too much hassle for me when all I want is to get 
   Python working only. (Contribution are welcomed.)
