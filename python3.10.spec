@@ -170,21 +170,25 @@ sed -i "s|#! */usr/local/bin/python|#! %{_bindir}/python%{pybasever}|" %{buildro
 sed -i "s|%{_bindir}/python|%{_bindir}/python%{pybasever}|" %{buildroot}%{_bindir}/pip%{pybasever}
 
 %files
+####################################################################
+# Files that should belongs to python%{pybasever}
+####################################################################
+
 %doc README.rst
 %{_bindir}/python%{pybasever}
-%{_bindir}/2to3-%{pybasever}
-%{_bindir}/pip%{pybasever}
-%{_bindir}/idle%{pybasever}
 %{_bindir}/pydoc%{pybasever}
 %{_bindir}/python%{pybasever}-config
+
+####################################################################
+# Files that should belongs to python%{pybasever}-libs
+####################################################################
+
 %{_libdir}/%{py_INSTSONAME}
+%{_libdir}/libpython%{LDVERSION}.so
 
 %dir %{pylibdir}
 
 %license %{pylibdir}/LICENSE.txt
-
-%{pylibdir}/lib2to3
-# %exclude %{pylibdir}/lib2to3/tests
 
 %dir %{pylibdir}/unittest/
 %dir %{pylibdir}/unittest/__pycache__/
@@ -297,7 +301,6 @@ sed -i "s|%{_bindir}/python|%{_bindir}/python%{pybasever}|" %{buildroot}%{_bindi
 %{dynload_dir}/_xxsubinterpreters.%{SOABI}.so
 %{dynload_dir}/zlib.%{SOABI}.so
 %{dynload_dir}/_zoneinfo.%{SOABI}.so
-%{dynload_dir}/_tkinter.%{SOABI}.so
 
 %dir %{pylibdir}/site-packages/
 %{pylibdir}/site-packages/README.txt
@@ -366,39 +369,6 @@ sed -i "s|%{_bindir}/python|%{_bindir}/python%{pybasever}|" %{buildroot}%{_bindi
 %{pylibdir}/sqlite3/*.py
 %{pylibdir}/sqlite3/__pycache__/*%{bytecode_suffixes}
 
-# %{pylibdir}/turtle.py
-# %{pylibdir}/__pycache__/turtle*%{bytecode_suffixes}
-
-%dir %{pylibdir}/idlelib
-%dir %{pylibdir}/idlelib/Icons
-%dir %{pylibdir}/idlelib/__pycache__
-%{pylibdir}/idlelib/*.txt
-%{pylibdir}/idlelib/*.py
-%{pylibdir}/idlelib/*.def
-%{pylibdir}/idlelib/ChangeLog
-%{pylibdir}/idlelib/help.html
-%{pylibdir}/idlelib/idle.bat
-%{pylibdir}/idlelib/idle.pyw
-%{pylibdir}/idlelib/Icons/README.txt
-%{pylibdir}/idlelib/Icons/*.ico
-%{pylibdir}/idlelib/Icons/*.png
-%{pylibdir}/idlelib/Icons/*.gif
-%{pylibdir}/idlelib/__pycache__/*%{bytecode_suffixes}
-
-
-%dir %{pylibdir}/tkinter
-%dir %{pylibdir}/tkinter/__pycache__
-%{pylibdir}/tkinter/*.py
-%{pylibdir}/tkinter/__pycache__/*%{bytecode_suffixes}
-
-%dir %{pylibdir}/turtledemo
-%dir %{pylibdir}/turtledemo/__pycache__
-%{pylibdir}/turtledemo/*.py
-%{pylibdir}/turtledemo/__pycache__/*%{bytecode_suffixes}
-%{pylibdir}/turtledemo/turtle.cfg
-
-%exclude %{_mandir}/man1/python3.10.1.gz
-
 %{pylibdir}/urllib
 %{pylibdir}/xml
 %{pylibdir}/zoneinfo
@@ -408,7 +378,45 @@ sed -i "s|%{_bindir}/python|%{_bindir}/python%{pybasever}|" %{buildroot}%{_bindi
 %attr(0755,root,root) %dir %{_prefix}/lib/python%{pybasever}/site-packages
 %endif
 
-%{_libdir}/libpython%{LDVERSION}.so
+
+####################################################################
+# Files that should belongs to python%{pybasever}-2to3
+####################################################################
+
+%{_bindir}/2to3-%{pybasever}
+%{pylibdir}/lib2to3
+
+####################################################################
+# Files that should belongs to python%{pybasever}-idle
+####################################################################
+
+%{_bindir}/idle%{pybasever}
+%{pylibdir}/idlelib
+
+####################################################################
+# Files that should belongs to python%{pybasever}-tkinter
+####################################################################
+
+%{dynload_dir}/_tkinter.%{SOABI}.so
+
+%{pylibdir}/tkinter
+
+# %{pylibdir}/turtle.py
+# %{pylibdir}/__pycache__/turtle*%{bytecode_suffixes}
+
+%{pylibdir}/turtledemo
+
+
+####################################################################
+# Files that should belongs to python%{pybasever}-doc
+####################################################################
+
+%{_mandir}/man1/python3.10.1.gz
+
+
+####################################################################
+# Files that should belongs to python%{pybasever}-devel
+####################################################################
 %{_libdir}/pkgconfig/python-%{LDVERSION}.pc
 %{_libdir}/pkgconfig/python-%{LDVERSION}-embed.pc
 
@@ -424,366 +432,27 @@ sed -i "s|%{_bindir}/python|%{_bindir}/python%{pybasever}|" %{buildroot}%{_bindi
 %{_includedir}/python3.10/internal/*.h
 %{_includedir}/python3.10/cpython/*.h
 
-# site-packages
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/_distutils_hack
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/_distutils_hack/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip-23.0.1.dist-info
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/cli
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/cli/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/commands
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/commands/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/distributions
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/distributions/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/index
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/index/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/locations
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/locations/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/metadata
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/metadata/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/metadata/importlib
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/metadata/importlib/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/models
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/models/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/network
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/network/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/operations
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/operations/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/operations/build
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/operations/build/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/operations/install
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/operations/install/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/req
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/req/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/resolution
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/resolution/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/resolution/legacy
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/resolution/legacy/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/resolution/resolvelib
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/resolution/resolvelib/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/utils
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/utils/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/vcs
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/vcs/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/cachecontrol
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/cachecontrol/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/cachecontrol/caches
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/cachecontrol/caches/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/certifi
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/certifi/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/chardet
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/chardet/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/chardet/cli
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/chardet/cli/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/chardet/metadata
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/chardet/metadata/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/colorama
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/colorama/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/colorama/tests
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/colorama/tests/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/distlib
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/distlib/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/distro
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/distro/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/idna
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/idna/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/msgpack
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/msgpack/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/packaging
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/packaging/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/pkg_resources
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/pkg_resources/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/platformdirs
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/platformdirs/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/pygments
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/pygments/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/pygments/filters
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/pygments/filters/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/pygments/formatters
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/pygments/formatters/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/pygments/lexers
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/pygments/lexers/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/pygments/styles
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/pygments/styles/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/pyparsing
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/pyparsing/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/pyparsing/diagram
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/pyparsing/diagram/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/pyproject_hooks
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/pyproject_hooks/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/pyproject_hooks/_in_process
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/pyproject_hooks/_in_process/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/requests
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/requests/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/resolvelib
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/resolvelib/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/resolvelib/compat
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/resolvelib/compat/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/rich
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/rich/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/tenacity
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/tenacity/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/tomli
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/tomli/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/urllib3
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/urllib3/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/urllib3/contrib
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/urllib3/contrib/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/urllib3/contrib/_securetransport
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/urllib3/contrib/_securetransport/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/urllib3/packages
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/urllib3/packages/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/urllib3/packages/backports
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/urllib3/packages/backports/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/urllib3/util
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/urllib3/util/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/webencodings
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/webencodings/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pkg_resources
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pkg_resources/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pkg_resources/_vendor
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pkg_resources/_vendor/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pkg_resources/_vendor/importlib_resources
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pkg_resources/_vendor/importlib_resources/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pkg_resources/_vendor/jaraco
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pkg_resources/_vendor/jaraco/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pkg_resources/_vendor/jaraco/text
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pkg_resources/_vendor/jaraco/text/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pkg_resources/_vendor/more_itertools
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pkg_resources/_vendor/more_itertools/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pkg_resources/_vendor/packaging
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pkg_resources/_vendor/packaging/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pkg_resources/_vendor/pyparsing
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pkg_resources/_vendor/pyparsing/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pkg_resources/_vendor/pyparsing/diagram
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pkg_resources/_vendor/pyparsing/diagram/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pkg_resources/extern
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/pkg_resources/extern/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/setuptools
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/setuptools-65.5.0.dist-info
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/setuptools/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/setuptools/_distutils
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/setuptools/_distutils/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/setuptools/_distutils/command
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/setuptools/_distutils/command/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/setuptools/_vendor
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/setuptools/_vendor/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/setuptools/_vendor/importlib_metadata
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/setuptools/_vendor/importlib_metadata/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/setuptools/_vendor/importlib_resources
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/setuptools/_vendor/importlib_resources/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/setuptools/_vendor/jaraco
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/setuptools/_vendor/jaraco/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/setuptools/_vendor/jaraco/text
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/setuptools/_vendor/jaraco/text/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/setuptools/_vendor/more_itertools
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/setuptools/_vendor/more_itertools/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/setuptools/_vendor/packaging
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/setuptools/_vendor/packaging/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/setuptools/_vendor/pyparsing
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/setuptools/_vendor/pyparsing/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/setuptools/_vendor/pyparsing/diagram
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/setuptools/_vendor/pyparsing/diagram/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/setuptools/_vendor/tomli
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/setuptools/_vendor/tomli/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/setuptools/command
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/setuptools/command/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/setuptools/config
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/setuptools/config/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/setuptools/config/_validate_pyproject
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/setuptools/config/_validate_pyproject/__pycache__
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/setuptools/extern
-%dir %{_prefix}/lib/python%{pybasever}/site-packages/setuptools/extern/__pycache__
 
-%{_prefix}/lib/python%{pybasever}/site-packages/setuptools-65.5.0.dist-info/*
-%{_prefix}/lib/python%{pybasever}/site-packages/pip-23.0.1.dist-info/*
-%{_prefix}/lib/python%{pybasever}/site-packages/setuptools/*.exe
-"%{_prefix}/lib/python%{pybasever}/site-packages/setuptools/command/launcher manifest.xml"
-%{_prefix}/lib/python%{pybasever}/site-packages/setuptools/*.tmpl
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/py.typed
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/vendor.txt
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/distlib/*.exe
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/certifi/cacert.pem
+####################################################################
+# Files that should belongs to python%{pybasever}-pip
+####################################################################
+%{_bindir}/pip%{pybasever}
+
+%{_prefix}/lib/python%{pybasever}/site-packages/pip-%{pip_version}.dist-info
+%{_prefix}/lib/python%{pybasever}/site-packages/pip
+
+####################################################################
+# Files that should belongs to
+# * python%{pybasever}-setuptools
+# * python%{pybasever}-pkg_resources
+####################################################################
+
 %{_prefix}/lib/python%{pybasever}/site-packages/distutils-precedence.pth
+%{_prefix}/lib/python%{pybasever}/site-packages/_distutils_hack
 
-%{_prefix}/lib/python%{pybasever}/site-packages/_distutils_hack/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/cli/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/commands/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/distributions/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/index/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/locations/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/metadata/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/metadata/importlib/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/models/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/network/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/operations/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/operations/build/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/operations/install/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/req/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/resolution/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/resolution/legacy/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/resolution/resolvelib/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/utils/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/vcs/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/cachecontrol/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/cachecontrol/caches/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/certifi/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/chardet/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/chardet/cli/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/chardet/metadata/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/colorama/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/colorama/tests/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/distlib/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/distro/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/idna/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/msgpack/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/packaging/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/pkg_resources/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/platformdirs/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/pygments/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/pygments/filters/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/pygments/formatters/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/pygments/lexers/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/pygments/styles/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/pyparsing/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/pyparsing/diagram/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/pyproject_hooks/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/pyproject_hooks/_in_process/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/requests/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/resolvelib/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/resolvelib/compat/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/rich/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/tenacity/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/tomli/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/urllib3/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/urllib3/contrib/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/urllib3/contrib/_securetransport/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/urllib3/packages/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/urllib3/packages/backports/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/urllib3/util/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/webencodings/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/pkg_resources/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/pkg_resources/_vendor/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/pkg_resources/_vendor/importlib_resources/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/pkg_resources/_vendor/jaraco/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/pkg_resources/_vendor/jaraco/text/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/pkg_resources/_vendor/more_itertools/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/pkg_resources/_vendor/packaging/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/pkg_resources/_vendor/pyparsing/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/pkg_resources/_vendor/pyparsing/diagram/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/pkg_resources/extern/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/setuptools/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/setuptools/_distutils/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/setuptools/_distutils/command/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/setuptools/_vendor/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/setuptools/_vendor/importlib_metadata/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/setuptools/_vendor/importlib_resources/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/setuptools/_vendor/jaraco/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/setuptools/_vendor/jaraco/text/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/setuptools/_vendor/more_itertools/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/setuptools/_vendor/packaging/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/setuptools/_vendor/pyparsing/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/setuptools/_vendor/pyparsing/diagram/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/setuptools/_vendor/tomli/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/setuptools/command/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/setuptools/config/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/setuptools/config/_validate_pyproject/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/setuptools/extern/*.py
-%{_prefix}/lib/python%{pybasever}/site-packages/_distutils_hack/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/cli/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/commands/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/distributions/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/index/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/locations/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/metadata/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/metadata/importlib/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/models/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/network/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/operations/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/operations/build/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/operations/install/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/req/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/resolution/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/resolution/legacy/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/resolution/resolvelib/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/utils/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_internal/vcs/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/cachecontrol/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/cachecontrol/caches/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/certifi/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/chardet/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/chardet/cli/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/chardet/metadata/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/colorama/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/colorama/tests/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/distlib/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/distro/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/idna/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/msgpack/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/packaging/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/pkg_resources/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/platformdirs/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/pygments/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/pygments/filters/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/pygments/formatters/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/pygments/lexers/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/pygments/styles/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/pyparsing/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/pyparsing/diagram/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/pyproject_hooks/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/pyproject_hooks/_in_process/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/requests/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/resolvelib/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/resolvelib/compat/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/rich/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/tenacity/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/tomli/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/urllib3/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/urllib3/contrib/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/urllib3/contrib/_securetransport/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/urllib3/packages/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/urllib3/packages/backports/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/urllib3/util/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/pip/_vendor/webencodings/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/pkg_resources/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/pkg_resources/_vendor/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/pkg_resources/_vendor/importlib_resources/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/pkg_resources/_vendor/jaraco/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/pkg_resources/_vendor/jaraco/text/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/pkg_resources/_vendor/more_itertools/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/pkg_resources/_vendor/packaging/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/pkg_resources/_vendor/pyparsing/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/pkg_resources/_vendor/pyparsing/diagram/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/pkg_resources/extern/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/setuptools/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/setuptools/_distutils/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/setuptools/_distutils/command/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/setuptools/_vendor/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/setuptools/_vendor/importlib_metadata/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/setuptools/_vendor/importlib_resources/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/setuptools/_vendor/jaraco/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/setuptools/_vendor/jaraco/text/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/setuptools/_vendor/more_itertools/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/setuptools/_vendor/packaging/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/setuptools/_vendor/pyparsing/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/setuptools/_vendor/pyparsing/diagram/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/setuptools/_vendor/tomli/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/setuptools/command/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/setuptools/config/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/setuptools/config/_validate_pyproject/__pycache__/*%{bytecode_suffixes}
-%{_prefix}/lib/python%{pybasever}/site-packages/setuptools/extern/__pycache__/*%{bytecode_suffixes}
-
+%{_prefix}/lib/python%{pybasever}/site-packages/pkg_resources
+%{_prefix}/lib/python%{pybasever}/site-packages/setuptools-%{setuptools_version}.dist-info
+%{_prefix}/lib/python%{pybasever}/site-packages/setuptools
 
 %changelog
 
