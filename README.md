@@ -2,12 +2,25 @@
 
 Note: The RPM spec is still in development.
 
+While Fedora Project has [rpms/python3.10](https://src.fedoraproject.org/rpms/python3.10)
+RPM source code, it doesn't work on EL7 as it uses multiple new directives that EL7 RPM
+cannot support.
+
 ## Limitations
 
-* `tkinter` module is not available due to Python 3.10 requires Tk 8.6, while EL7 got
-  only Tk 8.5.
+* ~~`tkinter` module is not available due to Python 3.10 requires Tk 8.6, while EL7 got
+  only Tk 8.5.~~ <br>Although not officially supported, it seems that Python can be
+  compiled with Tk 8.5, . This is completed by following the guidance from
+  [CPython 3.11 Misc/rhel7](https://github.com/python/cpython/tree/v3.11.5/Misc/rhel7).
+    * That being said, I'm not sure what will happen if there's any Tk 8.6 only code
+      being used by any Python script. User may have very degraded experience.
 * `_ssl` requires `openssl11-libs` from epel repo, I'm not sure whether to put
   `epel-release` as one of the requirement packages or not.
+* I'm not planned to unbundle things like python3.10-pip and python3.10-setuptools into
+  separated packages. It'll create too much hassle for me when all I want is to get 
+  Python working only. (Contribution are welcomed.)
+* The built RPM package will not create links for Idle in desktop.
+  * I mean c'mon, you should have something like VSCode or PyCharm already, right?
 
 ## Build (With Docker, Recommended)
 
@@ -26,34 +39,17 @@ find build/* -type d | xargs -n 1 rm -r
 
 ## Build (On local machine)
 
-Caution: This process will temporary replace `/usr/lib64/pkgconfig/openssl.pc` with
-`/usr/lib64/pkgconfig/openssl11.pc`.
-
-If not sure what this means, build RPM inside an EL7-based container instead.
-
 ```bash
 #!/bin/bash
 yum install -y epel-release rpmdevtools rpmlint
 yum-builddep -y python3.10.spec
-HAS_SYSTEM_OPENSSL=
-if [ -f /usr/lib64/pkgconfig/openssl.pc ]; then
-    if [ -f /usr/lib64/pkgconfig/openssl.pc.backup ]; then
-        echo "Unable to backup /usr/lib64/pkgconfig/openssl.pc, aborting"
-        exit 1
-    fi
-    HAS_SYSTEM_OPENSSL=1
-    cp /usr/lib64/pkgconfig/openssl.pc /usr/lib64/pkgconfig/openssl.pc.backup
-fi
-
 rpmdev-setuptree
 spectool -g -S -R python3.10.spec
+
+export PKG_CONFIG_PATH=$(pwd)/el7-pkgconfig
 rpmbuild -bs python3.10.spec
-ln -s /usr/lib64/pkgconfig/openssl11.pc /usr/lib64/pkgconfig/openssl.pc
 rpmbuild -bb python3.10.spec
-rm /usr/lib64/pkgconfig/openssl.pc
-if ! [ -z "$HAS_SYSTEM_OPENSSL" ]; then
-    rm /usr/lib64/pkgconfig/openssl.pc
-    cp /usr/lib64/pkgconfig/openssl.pc.backup /usr/lib64/pkgconfig/openssl.pc
-    rm /usr/lib64/pkgconfig/openssl.pc.backup
-fi
+
+# The built RPM packages will exist in ~/rpmbuild/RPMS for binary RPMs and
+# ~/rpmbuild/SRPMS for source RPM.
 ```
