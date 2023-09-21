@@ -193,24 +193,30 @@ topdir=$(pwd)
     --with-system-expat \
     --with-system-ffi \
     --without-static-libpython \
-    --enable-loadable-sqlite-extensions \
+    --enable-loadable-sqlite-extensions
 
 %make_build
 
 %install
 
-%make_install
+# Use altinstall.
+%{__make} altinstall DESTDIR=%{?buildroot}
 
-rm %{buildroot}%{_bindir}/python3
-rm %{buildroot}%{_bindir}/pydoc3
-rm %{buildroot}%{_bindir}/pip3
-rm %{buildroot}%{_bindir}/idle3
-rm %{buildroot}%{_bindir}/python3-*
-rm %{buildroot}%{_bindir}/2to3
-rm %{buildroot}%{_libdir}/libpython3.so
-rm %{buildroot}%{_mandir}/man1/python3.1
-rm %{buildroot}%{_libdir}/pkgconfig/python3.pc
-rm %{buildroot}%{_libdir}/pkgconfig/python3-embed.pc
+[ -f %{buildroot}%{_bindir}/python3 ] && rm %{buildroot}%{_bindir}/python3
+[ -f %{buildroot}%{_bindir}/pydoc3 ] && rm %{buildroot}%{_bindir}/pydoc3
+[ -f %{buildroot}%{_bindir}/pip3 ] && rm %{buildroot}%{_bindir}/pip3
+[ -f %{buildroot}%{_bindir}/idle3 ] && rm %{buildroot}%{_bindir}/idle3
+[ -f %{buildroot}%{_bindir}/2to3 ] && rm %{buildroot}%{_bindir}/2to3
+[ -f %{buildroot}%{_libdir}/libpython3.so ] && rm %{buildroot}%{_libdir}/libpython3.so
+[ -f %{buildroot}%{_mandir}/man1/python3.1 ] && rm %{buildroot}%{_mandir}/man1/python3.1
+[ -f %{buildroot}%{_libdir}/pkgconfig/python3.pc ] && rm %{buildroot}%{_libdir}/pkgconfig/python3.pc
+[ -f %{buildroot}%{_libdir}/pkgconfig/python3-embed.pc ] && rm %{buildroot}%{_libdir}/pkgconfig/python3-embed.pc
+ls %{buildroot}%{_bindir}/python3-* > /dev/null && rm %{buildroot}%{_bindir}/python3-* || true
+
+# For some reason, the shebang of installed pip points to /usr/bin/python instead
+# of /usr/bin/python3.10. The script below is to change that.
+
+sed -i "s|%{_bindir}/python|%{_bindir}/python%{pybasever}|" %{buildroot}%{_bindir}/pip%{pybasever}
 
 %files
 %doc README.rst
