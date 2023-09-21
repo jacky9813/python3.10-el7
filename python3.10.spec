@@ -787,5 +787,5 @@ sed -i "s|%{_bindir}/python|%{_bindir}/python%{pybasever}|" %{buildroot}%{_bindi
 
 %changelog
 
-* Tue Sep 19 2023 Jacky Chen <jacky9813@hotmail.com> - 3.10.13-1
+* Tue Sep 19 2023 Jacky Chen <jacky9813@hotmail.com> - 3.10.13-1.jackychen
 - Initial Python 3.10 package.
