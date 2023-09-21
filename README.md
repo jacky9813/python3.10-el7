@@ -1,7 +1,5 @@
 # Python 3.10 RPM package for Enterprise Linux 7
 
-Note: The RPM spec is still in development.
-
 While Fedora Project has [rpms/python3.10](https://src.fedoraproject.org/rpms/python3.10)
 RPM source code, it doesn't work on EL7 as it uses multiple new directives that EL7 RPM
 cannot support.
