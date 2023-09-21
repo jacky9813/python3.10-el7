@@ -112,7 +112,6 @@ https://github.com/jacky9813/python3.10-el7 for RPM Spec source code.
 
 %prep
 %setup -q -n Python-%{pyfullver}
-# %gpgverify -k2 -s1 -d0
 
 find -name '*.exe' -print -delete
 
@@ -126,11 +125,10 @@ export HAS_GIT=not-found
 autoconf
 autoheader
 
-topdir=$(pwd)
-
-# export CFLAGS="$(pkg-config --cflags openssl11)"
-# export LDFLAGS="$(pkg-config --libs openssl11)"
-# export DFLAGS=" "
+# Here I specified --disable-test-modules to reduce installed package size, as
+# user wouldn't need test scripts for testing Python build.
+# These files, however, is compiled in official Python build and packaged into
+# package like python3-test.
 
 %configure \
     --enable-ipv6 \
